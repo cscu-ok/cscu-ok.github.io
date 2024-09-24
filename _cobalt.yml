@@ -5,3 +5,10 @@ site:
   base_url: https://cscu.io
 posts:
   rss: rss.xml
+ignore:
+ - "*~"
+ - "*.swp"
+ - ".*.swp"
+ - "*.swo"
+ - ".*.swo"
+ - "README.md"
