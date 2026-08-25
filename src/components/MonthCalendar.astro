@@ -1,0 +1,93 @@
+---
+// Monthly calendar view for the Events page, with an upcoming-events sidebar.
+// Pure CSS Grid computed at build time, same approach as the homepage hero's
+// week view — no client JS, degrades to the plain list already below it.
+import { buildMonthGrid, monthLabel } from '../lib/monthCalendar';
+import type { TimetableEvent } from '../lib/timetable';
+
+interface Props {
+  events: TimetableEvent[];
+  upcoming: TimetableEvent[];
+}
+
+const { events, upcoming } = Astro.props;
+const now = new Date();
+const grid = buildMonthGrid(events, now);
+const label = monthLabel(now);
+const weeks = Array.from({ length: grid.length / 7 }, (_, i) => grid.slice(i * 7, i * 7 + 7));
+const dayLabels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+const sidebarEvents = upcoming.slice(0, 5);
+---
+
+<div class="grid gap-6 lg:grid-cols-[1fr_18rem]">
+  <div class="overflow-x-auto rounded-lg border border-navy/10 bg-paper">
+    <div class="min-w-[40rem] p-4">
+      <p class="px-1 pb-2 font-display text-lg font-semibold text-navy">{label}</p>
+      <div class="grid grid-cols-7 gap-px overflow-hidden rounded-md border border-navy/10 bg-navy/10">
+        {
+          dayLabels.map((d) => (
+            <div class="bg-pale px-2 py-1.5 text-center font-mono text-xs font-medium text-navy/70">{d}</div>
+          ))
+        }
+        {
+          weeks.flat().map((cell) => (
+            <div
+              class:list={[
+                'min-h-[5.5rem] bg-paper p-1.5 text-left align-top',
+                cell.isToday && 'bg-orange/10',
+              ]}
+            >
+              {cell.date && (
+                <>
+                  <span class:list={['font-mono text-xs', cell.isToday ? 'font-semibold text-navy' : 'text-navy/70']}>
+                    {cell.date.getDate()}
+                  </span>
+                  <ul class="mt-1 space-y-0.5">
+                    {cell.events.slice(0, 3).map((e) => (
+                      <li class="truncate rounded bg-teal/30 px-1 py-0.5 text-[10px] font-medium text-navy">
+                        {e.href ? <a href={e.href} class="hover:underline">{e.title}</a> : e.title}
+                      </li>
+                    ))}
+                    {cell.events.length > 3 && (
+                      <li class="px-1 text-[10px] text-navy/60">+{cell.events.length - 3} more</li>
+                    )}
+                  </ul>
+                </>
+              )}
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <aside aria-labelledby="calendar-upcoming-heading">
+    <p id="calendar-upcoming-heading" class="font-mono text-xs font-medium tracking-widest text-navy/70">
+      UPCOMING
+    </p>
+    {
+      sidebarEvents.length === 0 ? (
+        <p class="mt-3 text-sm text-navy/70">Nothing scheduled yet.</p>
+      ) : (
+        <ul class="mt-3 space-y-3">
+          {sidebarEvents.map((e) => (
+            <li class="rounded-lg border border-navy/10 bg-paper p-3">
+              {e.href ? (
+                <a href={e.href} class="font-semibold text-navy hover:text-orange">
+                  {e.title}
+                </a>
+              ) : (
+                <p class="font-semibold text-navy">{e.title}</p>
+              )}
+              <p class="mt-0.5 text-xs text-navy/70">
+                {e.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+                {' · '}
+                {e.location}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </aside>
+</div>

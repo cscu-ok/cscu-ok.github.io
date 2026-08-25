@@ -20,7 +20,7 @@ const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
     {
       posts.length === 0 ? (
         <p class="mt-4 text-navy/70">
-          No posts yet — check the{' '}
+          No posts yet. Check the{' '}
           <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">
             Discord
           </a>{' '}

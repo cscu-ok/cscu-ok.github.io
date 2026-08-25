@@ -4,6 +4,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
 import Card from '../../components/Card.astro';
+import MonthCalendar from '../../components/MonthCalendar.astro';
+import type { TimetableEvent } from '../../lib/timetable';
 
 const now = new Date();
 const all = (await getCollection('events', ({ data }) => !data.draft)).sort(
@@ -14,12 +16,27 @@ const past = all.filter((e) => e.data.date < now).reverse();
 
 const TYPES = ['workshop', 'social', 'talk', 'hackathon', 'meeting', 'other'] as const;
 const typesPresent = TYPES.filter((t) => all.some((e) => e.data.type === t));
+
+const asTimetableEvent = (e: (typeof all)[number]): TimetableEvent => ({
+  title: e.data.title,
+  date: e.data.date,
+  end: e.data.end,
+  location: e.data.location,
+  type: e.data.type,
+  href: `/events/${e.id}/`,
+});
+const allTimetable = all.map(asTimetableEvent);
+const upcomingTimetable = upcoming.map(asTimetableEvent);
 ---
 
 <BaseLayout title="Events">
   <Nav />
-  <main id="main" class="mx-auto max-w-4xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-5xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">Events</h1>
+
+    <div class="mt-8">
+      <MonthCalendar events={allTimetable} upcoming={upcomingTimetable} />
+    </div>
 
     {
       typesPresent.length > 1 && (
@@ -46,7 +63,7 @@ const typesPresent = TYPES.filter((t) => all.some((e) => e.data.type === t));
       {
         upcoming.length === 0 ? (
           <p class="mt-4 text-navy/70">
-            Nothing posted yet — check the{' '}
+            Nothing posted yet. Check the{' '}
             <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">
               Discord
             </a>{' '}

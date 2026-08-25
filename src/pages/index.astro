@@ -24,6 +24,8 @@ const events: TimetableEvent[] = upcomingEntries.map((e) => ({
 
 const nextThree = upcomingEntries.slice(0, 3);
 
+const photos = (await getCollection('photos')).sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
@@ -43,7 +45,7 @@ const whatWeDo = [
   {
     eyebrow: 'COMMUNITY',
     title: 'Events & socials',
-    body: 'Workshops, talks, and socials through the term — open to any student in the program.',
+    body: 'Workshops, talks, and socials through the term, open to any student in the program.',
   },
   {
     eyebrow: 'OPPORTUNITY',
@@ -64,7 +66,7 @@ const whatWeDo = [
       {
         nextThree.length === 0 ? (
           <p class="mt-4 text-navy/70">
-            No events posted yet — check the <a href="/events" class="underline hover:text-orange">full events page</a> or our{' '}
+            No events posted yet. Check the <a href="/events" class="underline hover:text-orange">full events page</a> or our{' '}
             <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">Discord</a> for the latest.
           </p>
         ) : (
@@ -83,6 +85,36 @@ const whatWeDo = [
       }
     </section>
 
+    <section class="bg-pale/60 py-16" aria-labelledby="vision-heading">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <p class="font-mono text-xs font-medium tracking-widest text-navy/70">VISION</p>
+        <h2 id="vision-heading" class="mt-2 font-display text-2xl font-semibold text-navy">
+          Where CSCU is headed
+        </h2>
+        <p class="mt-4 text-navy/80">
+          TODO(content): the vision statement itself is being written by Marvin and
+          the exec team and hasn't landed yet. This section is intentionally kept as
+          a placeholder rather than a guess. See{' '}
+          <a href="/about" class="underline hover:text-orange">About</a> in the
+          meantime for the history and direction behind this rebuild.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 py-16" aria-labelledby="community-heading">
+      <p class="font-mono text-xs font-medium tracking-widest text-navy/70">ONE CS COMMUNITY</p>
+      <h2 id="community-heading" class="mt-2 max-w-2xl font-display text-2xl font-semibold text-navy">
+        Working with the department, and with every CS club
+      </h2>
+      <p class="mt-4 max-w-2xl text-navy/80">
+        CSCU works with the UBC Okanagan Department of Computer Science to support
+        the wider ecosystem of CS-related clubs on campus, including AI Club, Girls
+        in Tech, and others, rather than operating on its own. The goal is one CS
+        community with more consistent opportunities across all of them, not
+        separate clubs competing for the same small pool of student time.
+      </p>
+    </section>
+
     <section class="bg-pale/60 py-16" aria-labelledby="what-we-do-heading">
       <div class="mx-auto max-w-6xl px-6">
         <h2 id="what-we-do-heading" class="font-display text-2xl font-semibold text-navy">What we do</h2>
@@ -96,6 +128,26 @@ const whatWeDo = [
           }
         </div>
       </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 py-16" aria-labelledby="photos-heading">
+      <div class="flex items-baseline justify-between gap-4">
+        <h2 id="photos-heading" class="font-display text-2xl font-semibold text-navy">Photos</h2>
+        <a href="/past-years" class="text-sm text-navy/70 underline hover:text-orange">Past years</a>
+      </div>
+      {
+        photos.length === 0 ? (
+          <p class="mt-4 text-navy/70">No photos posted yet, check back after the next event.</p>
+        ) : (
+          <ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {photos.slice(0, 8).map((p) => (
+              <li class="aspect-square overflow-hidden rounded-lg bg-pale">
+                <img src={p.data.image} alt={p.data.alt} class="h-full w-full object-cover" loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        )
+      }
     </section>
 
     <section class="mx-auto max-w-6xl px-6 py-16 text-center" aria-labelledby="join-heading">

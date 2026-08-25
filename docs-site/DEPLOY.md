@@ -74,12 +74,17 @@ Per Section 0 rule 6 ("do not invent CSCU facts"), these are shipping as honest
 `TODO(content)` stubs rather than guessed-at copy. All of them are also logged in
 `docs-site/OPEN-QUESTIONS.md` with which open question blocks them:
 
-- About page: department relationship specifics, CSCU's history
+- Homepage Vision section: the actual vision statement, being written by Marvin and
+  the exec team directly
 - Constitution page: the actual governing document (blocked on Q8)
 - Get Involved: volunteer process, election process/timing, exec role descriptions
   (blocked on Q9)
-- Team page: exec roster (blocked on Q9) — currently zero entries
-- Events / News: zero entries exist to migrate (not a gap, just genuinely empty)
+- Team page: exec roster (blocked on Q9), currently zero entries
+- Events / News / Photos: zero entries exist yet (not a gap, just genuinely empty
+  until real events, posts, and photos are added)
+
+About page's department relationship and history are resolved with real content as
+of this writing, no longer a TODO.
 
 ## Known blockers (as of this writing)
 

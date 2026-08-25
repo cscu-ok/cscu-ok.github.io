@@ -113,6 +113,32 @@ Notes:
 - Posts automatically show up in `/news` and in the RSS feed at `/rss.xml`.
 - `draft: true` works the same way as for events.
 
+## Add a photo (homepage wall and Past Years)
+
+Upload the image file to `public/assets/img/gallery/` first, then create a new file
+in `src/content/photos/`, e.g. `2026-fall-kickoff-01.md`:
+
+```md
+---
+image: /assets/img/gallery/2026-fall-kickoff-01.jpg
+alt: Students at tables during the fall kickoff social
+caption: Fall kickoff, September 2026
+year: 2026-2027
+order: 1
+---
+```
+
+Notes:
+- `alt` is required and should describe what's actually in the photo for someone
+  using a screen reader, not repeat the caption.
+- `year` is optional. Add it (matching the same `2026-2027` format used for exec
+  `term`) to have the photo show up on the [Past Years](/past-years) page grouped
+  with that academic year. Leave it off for a recent photo that should only show on
+  the homepage wall.
+- `order` controls position (lower = earlier). Optional.
+- The homepage only shows the 8 most recent photos (by `order`); everything shows
+  on Past Years once it has a `year`.
+
 ## If something goes wrong
 
 If your PR's build check fails, click "Details" on the red X — it'll usually be one

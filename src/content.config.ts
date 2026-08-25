@@ -56,4 +56,18 @@ const posts = defineCollection({
   }),
 });
 
-export const collections = { events, execs, resources, posts };
+const photos = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/photos' }),
+  schema: z.object({
+    image: z.string(),
+    alt: z.string(),
+    caption: z.string().optional(),
+    // Academic year label, e.g. "2024-2025" — matches execs' `term` format.
+    // Optional: an undated recent photo can still show on the homepage wall
+    // without belonging to a Past Years archive entry.
+    year: z.string().optional(),
+    order: z.number().optional(),
+  }),
+});
+
+export const collections = { events, execs, resources, posts, photos };
