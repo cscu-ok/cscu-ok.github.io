@@ -15,10 +15,23 @@ export async function getStaticPaths() {
 
 const { event } = Astro.props;
 const { Content } = await render(event);
-const { title, date, end, location, type, registrationUrl, summary } = event.data;
+const { title, date, end, location, type, registrationUrl, summary, image } = event.data;
+
+const eventJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: title,
+  startDate: date.toISOString(),
+  ...(end && { endDate: end.toISOString() }),
+  location: { '@type': 'Place', name: location },
+  description: summary,
+  url: new URL(`/events/${event.id}/`, 'https://cscusuo.org').toString(),
+  organizer: { '@type': 'Organization', name: 'CSCU', url: 'https://cscusuo.org' },
+};
 ---
 
-<BaseLayout title={title} description={summary}>
+<BaseLayout title={title} description={summary} image={image} type="article">
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(eventJsonLd)} />
   <Nav />
   <main id="main" class="mx-auto max-w-2xl px-6 py-16">
     <p class="font-mono text-xs font-medium tracking-widest text-navy/70">{type.toUpperCase()}</p>

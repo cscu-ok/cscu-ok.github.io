@@ -6,10 +6,13 @@ const secondaryLinks = [
   { href: '/bchacks/', label: 'BC Hacks' },
 ];
 
+// Explicit width/height per icon's real aspect ratio (FR-25: no CLS, and forcing
+// non-square icons into a square box distorts them — Lighthouse's
+// image-aspect-ratio audit caught discord.png and mail.png being squished).
 const socials = [
-  { href: 'https://instagram.com/cscu.ok', label: 'Instagram', icon: '/assets/img/instagram.png' },
-  { href: 'https://discord.gg/9ZD8VDW7gf', label: 'Discord', icon: '/assets/img/discord.png' },
-  { href: 'mailto:contact@cscusuo.org', label: 'Email contact@cscusuo.org', icon: '/assets/img/mail.png' },
+  { href: 'https://instagram.com/cscu.ok', label: 'Instagram', icon: '/assets/img/instagram.png', w: 20, h: 20 },
+  { href: 'https://discord.gg/9ZD8VDW7gf', label: 'Discord', icon: '/assets/img/discord.png', w: 27, h: 20 },
+  { href: 'mailto:contact@cscusuo.org', label: 'Email contact@cscusuo.org', icon: '/assets/img/mail.png', w: 25, h: 20 },
 ];
 ---
 
@@ -40,7 +43,7 @@ const socials = [
           socials.map((social) => (
             <li>
               <a href={social.href} aria-label={social.label}>
-                <img src={social.icon} alt="" aria-hidden="true" class="h-5 w-5" />
+                <img src={social.icon} alt="" aria-hidden="true" width={social.w} height={social.h} class="h-5 w-auto" />
               </a>
             </li>
           ))

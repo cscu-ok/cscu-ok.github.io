@@ -13,6 +13,7 @@
     "astro": "astro",
     "check": "astro check",
     "test:links": "linkinator ./dist --recurse --silent --skip \"instagram\\.com|discord\\.gg|github\\.com|cscusuo\\.org\"",
+    "test:redirects": "node scripts/check-redirects.mjs",
     "test:a11y": "start-server-and-test preview http://localhost:4321 test:a11y:run",
     "test:a11y:run": "pa11y-ci --config .pa11yci.json"
   },

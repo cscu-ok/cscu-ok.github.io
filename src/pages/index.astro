@@ -24,6 +24,16 @@ const events: TimetableEvent[] = upcomingEntries.map((e) => ({
 
 const nextThree = upcomingEntries.slice(0, 3);
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Computer Science Course Union',
+  alternateName: 'CSCU',
+  url: 'https://cscusuo.org',
+  logo: 'https://cscusuo.org/assets/img/logo.png',
+  sameAs: ['https://instagram.com/cscu.ok'],
+};
+
 const whatWeDo = [
   {
     eyebrow: 'ADVOCACY',
@@ -44,6 +54,7 @@ const whatWeDo = [
 ---
 
 <BaseLayout title="Home">
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
   <Nav />
   <main id="main">
     <Hero events={events} />

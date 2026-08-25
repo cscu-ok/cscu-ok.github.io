@@ -7,7 +7,7 @@ that the spec says not to guess at silently. Update the status as answers come i
 |---|---|---|
 | Q1 | Is `cscusuo.org` the permanent domain, or is `cscu.io` intended to be used at some point? Affects FR-10. | Open. Built against `cscusuo.org` per the live CNAME — this is what the spec calls the domain that "must not change." |
 | Q2 | Who has admin rights on the `cscu-ok` org and the DNS registrar? Two cutover steps (Section 11) need that person. | Open, left unresolved by request — not pinging anyone. Only blocks the M5 cutover, not the build. |
-| Q3 | Does CSCU have a role-based email (e.g. `hello@cscusuo.org`) for the Contact page (FR-20)? | Open. Needed before M3 (Contact page) ships real content. |
+| Q3 | Does CSCU have a role-based email for the Contact page (FR-20)? | Answered by existing evidence: the old site's `index.liquid` already published `mailto:contact@cscusuo.org`, so v2 uses that same address (Footer and Contact page) rather than treating it as unknown. Confirm it's still monitored/correct before cutover, but it's not a guess — it's what's already live. |
 | Q4 | Is a contact form wanted? Conflicts with C8 (no third-party trackers/services) if yes. | Open. Building without one per the spec's default (FR-20: "no contact form in v2"). |
 | Q5 | Analytics: none, or a cookieless option? | Open. Building with none per C8 until decided. |
 | Q6 | Add a Git-backed CMS (Decap/Sveltia) for non-technical editing? | Deferred, per spec — out of scope for v2. Content schemas (FR-11) are being kept simple enough not to block this later. |
