@@ -6,9 +6,23 @@ import Footer from '../../components/Footer.astro';
 
 <BaseLayout title="About">
   <Nav />
-  <main id="main" class="mx-auto max-w-3xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-2xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">About CSCU</h1>
-    <p class="mt-4 text-navy/70">TODO(content): department relationship, constitution, history — real content lands in M3/M4.</p>
+    <p class="mt-4 text-navy/80">
+      CSCU is the Computer Science Course Union at UBC Okanagan — a department-backed
+      hub for CS and Data Science students, run by students.
+    </p>
+    <p class="mt-4 text-navy/80">
+      TODO(content): the specifics of the department relationship (who CSCU reports to
+      or works with, what that relationship looks like in practice) and CSCU's history
+      aren't in this migration's source material. Needs real content from Marvin/exec
+      before this ships to production (FR-24 will block the build until it's here).
+    </p>
+    <p class="mt-4 text-navy/80">
+      See the <a href="/about/constitution" class="underline hover:text-orange">constitution</a>
+      for how CSCU is governed, or <a href="/team" class="underline hover:text-orange">the team</a>
+      page for who's currently running it.
+    </p>
   </main>
   <Footer />
 </BaseLayout>

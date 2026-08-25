@@ -2,13 +2,45 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
 ---
 
 <BaseLayout title="Get Involved">
   <Nav />
   <main id="main" class="mx-auto max-w-3xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">Get Involved</h1>
-    <p class="mt-4 text-navy/70">TODO(content): how to join, volunteer, run for a role, election info — lands in M3.</p>
+    <p class="mt-3 max-w-xl text-navy/80">
+      Membership is open to any UBCO student in Computer Science or Data Science.
+    </p>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+      <Card eyebrow="MEMBERSHIP" title="Become a member">
+        Join on Rubric to get event updates and access to member sales.
+        <div class="mt-3">
+          <Button href="https://clubs.getqpay.com/?tab=memberships&s=9287" variant="secondary">Join on Rubric</Button>
+        </div>
+      </Card>
+      <Card eyebrow="VOLUNTEER" title="Volunteer">
+        TODO(content): CSCU doesn't have a documented volunteer process in the migrated
+        content yet. In the meantime, the{' '}
+        <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">Discord</a>{' '}
+        is the way in.
+      </Card>
+      <Card eyebrow="RUN FOR EXEC" title="Run for a role">
+        TODO(content): election process and timing — blocked on Q9
+        (docs-site/OPEN-QUESTIONS.md). The nomination link migrated from the old site is
+        flagged as likely stale; see <a href="/resources" class="underline hover:text-orange">Resources</a>.
+      </Card>
+    </div>
+
+    <h2 class="mt-12 font-display text-2xl font-semibold text-navy">Exec roles</h2>
+    <p class="mt-3 text-navy/80">
+      TODO(content): what each exec role actually does — blocked on Q9. This section
+      carries real credibility weight for prospective execs and the department, so it
+      should be written from the actual current roster and role descriptions, not
+      guessed at.
+    </p>
   </main>
   <Footer />
 </BaseLayout>

@@ -6,9 +6,36 @@ import Footer from '../components/Footer.astro';
 
 <BaseLayout title="Contact">
   <Nav />
-  <main id="main" class="mx-auto max-w-3xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-2xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">Contact</h1>
-    <p class="mt-4 text-navy/70">TODO(content): role-based email, Discord, Instagram, department affiliation — lands in M3.</p>
+    <p class="mt-3 text-navy/80">CSCU is a student union in the Computer Science program at UBC Okanagan.</p>
+
+    <dl class="mt-8 space-y-4">
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">EMAIL</dt>
+        <dd class="mt-1 text-navy/80">
+          TODO(content): no role-based email confirmed yet — blocked on Q3
+          (docs-site/OPEN-QUESTIONS.md). Per C7, this must be a role address
+          (e.g. hello@cscusuo.org), never a personal one.
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">DISCORD</dt>
+        <dd class="mt-1">
+          <a href="https://discord.gg/9ZD8VDW7gf" class="text-navy underline hover:text-orange">
+            discord.gg/9ZD8VDW7gf
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">INSTAGRAM</dt>
+        <dd class="mt-1">
+          <a href="https://instagram.com/cscu.ok" class="text-navy underline hover:text-orange">
+            @cscu.ok
+          </a>
+        </dd>
+      </div>
+    </dl>
   </main>
   <Footer />
 </BaseLayout>

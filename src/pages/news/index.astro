@@ -1,14 +1,48 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Nav from '../../components/Nav.astro';
 import Footer from '../../components/Footer.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime()
+);
 ---
 
 <BaseLayout title="News">
   <Nav />
   <main id="main" class="mx-auto max-w-3xl px-6 py-16">
-    <h1 class="font-display text-3xl font-semibold text-navy">News</h1>
-    <p class="mt-4 text-navy/70">TODO(content): announcements and recaps, also the RSS source — lands in M3.</p>
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="font-display text-3xl font-semibold text-navy">News</h1>
+      <a href="/rss.xml" class="text-sm text-navy/70 underline hover:text-orange">RSS</a>
+    </div>
+
+    {
+      posts.length === 0 ? (
+        <p class="mt-4 text-navy/70">
+          No posts yet — check the{' '}
+          <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">
+            Discord
+          </a>{' '}
+          for the latest in the meantime.
+        </p>
+      ) : (
+        <ul class="mt-6 divide-y divide-navy/10 border-y border-navy/10">
+          {posts.map((post) => (
+            <li class="py-4">
+              <a href={`/news/${post.id}/`} class="font-semibold text-navy hover:text-orange">
+                {post.data.title}
+              </a>
+              <p class="mt-1 text-sm text-navy/70">
+                {post.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                {post.data.author && ` · ${post.data.author}`}
+              </p>
+              <p class="mt-1 text-sm text-navy/80">{post.data.summary}</p>
+            </li>
+          ))}
+        </ul>
+      )
+    }
   </main>
   <Footer />
 </BaseLayout>

@@ -6,9 +6,19 @@ import Footer from '../../components/Footer.astro';
 
 <BaseLayout title="Constitution">
   <Nav />
-  <main id="main" class="mx-auto max-w-3xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-2xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">Constitution</h1>
-    <p class="mt-4 text-navy/70">TODO(content): the governing document — blocked on Q8 (docs-site/OPEN-QUESTIONS.md), lands in M3/M4.</p>
+    <p class="mt-4 text-navy/80">
+      TODO(content): the governing document itself — blocked on Q8
+      (docs-site/OPEN-QUESTIONS.md: is there an approved constitution to publish here,
+      and is it public?). The old site linked out to a{' '}
+      <a href="https://github.com/cscu-ok/regulations" class="underline hover:text-orange">
+        regulations repository
+      </a>{' '}
+      instead of hosting the document directly; that link is preserved on the{' '}
+      <a href="/resources" class="underline hover:text-orange">Resources</a> page in the
+      meantime.
+    </p>
   </main>
   <Footer />
 </BaseLayout>
