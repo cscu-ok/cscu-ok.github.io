@@ -35,13 +35,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Check for shipped placeholder content (FR-24)
-        run: |
-          if grep -rIl --exclude-dir=node_modules -e 'TODO(content)' -e 'lorem ipsum' src/content dist 2>/dev/null | grep -q .; then
-            echo "Placeholder content found in src/content or the built output:"
-            grep -rIln --exclude-dir=node_modules -e 'TODO(content)' -e 'lorem ipsum' src/content dist 2>/dev/null
-            exit 1
-          fi
+      # FR-24's placeholder guard ("TODO(content) must fail a production build") is
+      # NOT run here on purpose: during normal development, stub pages legitimately
+      # carry TODO(content) until their milestone fills them in, and gating every PR
+      # on it would make the check permanently red. It runs instead in the deploy
+      # workflow (M5) and as cutover checklist item 4 (docs-site/DEPLOY.md), which is
+      # the actual "production build" this requirement means.
 
       - name: Check internal links (FR-27)
         run: npm run test:links

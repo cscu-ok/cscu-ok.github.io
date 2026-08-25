@@ -1,5 +1,4 @@
 ---
-import '../styles/tokens.css';
 import '../styles/global.css';
 
 interface Props {
@@ -21,8 +20,13 @@ const { title, description = 'CSCU is the Computer Science Course Union at UBC O
     <meta name="generator" content={Astro.generator} />
     <title>{title} · CSCU</title>
   </head>
-  <body class="bg-[var(--color-paper)] text-[var(--color-navy)]">
-    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+  <body class="bg-paper text-navy font-body antialiased">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:bg-navy focus:text-paper focus:px-4 focus:py-2 focus:rounded-md"
+    >
+      Skip to content
+    </a>
     <slot />
   </body>
 </html>

@@ -12,7 +12,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "check": "astro check",
-    "test:links": "linkinator ./dist --recurse --silent --skip \"^https?://\"",
+    "test:links": "linkinator ./dist --recurse --silent --skip \"instagram\\.com|discord\\.gg|github\\.com|cscusuo\\.org\"",
     "test:a11y": "pa11y-ci --config .pa11yci.json"
   },
   "dependencies": {

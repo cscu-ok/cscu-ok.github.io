@@ -6,5 +6,15 @@
       "args": ["--no-sandbox", "--disable-setuid-sandbox"]
     }
   },
-  "urls": ["dist/index.html"]
+  "urls": [
+    "dist/index.html",
+    "dist/about/index.html",
+    "dist/about/constitution/index.html",
+    "dist/events/index.html",
+    "dist/team/index.html",
+    "dist/get-involved/index.html",
+    "dist/resources/index.html",
+    "dist/news/index.html",
+    "dist/contact/index.html"
+  ]
 }
