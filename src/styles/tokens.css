@@ -1,0 +1,16 @@
+/*
+ * Design tokens — single source of truth for color, spacing, type scale, radius.
+ * No raw hex values should appear anywhere else in src/ (FR-7).
+ *
+ * NOTE (M0): these color values are the approximations from the spec (Section 8.1),
+ * not yet sampled from the real logo asset at public/assets/img/logo.png.
+ * M1 replaces them with verified values and adds spacing/type-scale/radius tokens.
+ */
+
+:root {
+  --color-navy: #14284b;
+  --color-orange: #e58350;
+  --color-teal: #7fbfcc;
+  --color-pale: #d7ebf3;
+  --color-paper: #ffffff;
+}

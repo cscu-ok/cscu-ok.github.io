@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cscusuo.org/sitemap-index.xml

@@ -1,0 +1,28 @@
+---
+import '../styles/tokens.css';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'CSCU is the Computer Science Course Union at UBC Okanagan.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title} · CSCU</title>
+  </head>
+  <body class="bg-[var(--color-paper)] text-[var(--color-navy)]">
+    <a href="#main" class="sr-only focus:not-sr-only">Skip to content</a>
+    <slot />
+  </body>
+</html>
