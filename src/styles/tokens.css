@@ -41,6 +41,20 @@
   --color-border: color-mix(in srgb, var(--color-navy) 15%, transparent);
   --color-focus-ring: var(--color-orange);
 
+  /* Solid (not alpha) muted text. text-navy/70 (real alpha transparency) is
+     fine and verified everywhere it's used (5.5-6.1:1, see contrast note
+     above) EXCEPT text that's a descendant of a `position: absolute`
+     ancestor — axe-core false-flags alpha-channel text color there
+     regardless of the actual resolved color (a documented axe limitation,
+     not a real contrast defect; confirmed by inspecting computed styles).
+     Use this solid pre-blended token in that one situation. Equivalent to
+     navy/70 on white (6.11:1). */
+  --color-muted: #625d87;
+
+  /* Decorative-only grid-line texture (Hero empty state background-image).
+     Not text, so it has no WCAG contrast requirement at all. */
+  --color-navy-grid-line: color-mix(in srgb, var(--color-navy) 10%, transparent);
+
   /* Type: families */
   --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
   --font-body: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;

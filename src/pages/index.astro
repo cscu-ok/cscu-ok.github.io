@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
@@ -7,9 +8,21 @@ import Button from '../components/Button.astro';
 import Footer from '../components/Footer.astro';
 import type { TimetableEvent } from '../lib/timetable';
 
-// Wired to the real events content collection in M2 (FR-11/FR-13).
-const events: TimetableEvent[] = [];
-const nextThree = [...events].sort((a, b) => a.date.getTime() - b.date.getTime()).slice(0, 3);
+const now = new Date();
+const upcomingEntries = (await getCollection('events', ({ data }) => !data.draft))
+  .filter((e) => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const events: TimetableEvent[] = upcomingEntries.map((e) => ({
+  title: e.data.title,
+  date: e.data.date,
+  end: e.data.end,
+  location: e.data.location,
+  type: e.data.type,
+  href: `/events/${e.id}/`,
+}));
+
+const nextThree = upcomingEntries.slice(0, 3);
 
 const whatWeDo = [
   {
@@ -47,9 +60,11 @@ const whatWeDo = [
           <ol class="mt-6 grid gap-4 sm:grid-cols-3">
             {nextThree.map((e) => (
               <li>
-                <Card title={e.title} eyebrow={e.type.toUpperCase()}>
-                  {e.location}
-                </Card>
+                <a href={`/events/${e.id}/`} class="block">
+                  <Card title={e.data.title} eyebrow={e.data.type.toUpperCase()}>
+                    {e.data.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} · {e.data.location}
+                  </Card>
+                </a>
               </li>
             ))}
           </ol>

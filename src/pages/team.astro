@@ -1,14 +1,80 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+
+const execs = await getCollection('execs');
+const terms = [...new Set(execs.map((e) => e.data.term))].sort().reverse();
+const currentTerm = terms[0];
+
+const byTerm = terms.map((term) => ({
+  term,
+  members: execs.filter((e) => e.data.term === term).sort((a, b) => a.data.roleOrder - b.data.roleOrder),
+}));
+
+function initials(name: string) {
+  return name
+    .split(' ')
+    .map((part) => part[0])
+    .join('')
+    .slice(0, 2)
+    .toUpperCase();
+}
 ---
 
 <BaseLayout title="Team">
   <Nav />
-  <main id="main" class="mx-auto max-w-3xl px-6 py-16">
+  <main id="main" class="mx-auto max-w-4xl px-6 py-16">
     <h1 class="font-display text-3xl font-semibold text-navy">Team</h1>
-    <p class="mt-4 text-navy/70">TODO(content): exec roster by term — blocked on Q9 (docs-site/OPEN-QUESTIONS.md), lands in M2.</p>
+
+    {
+      byTerm.length === 0 ? (
+        <p class="mt-4 text-navy/70">
+          TODO(content): exec roster not published yet — blocked on Q9
+          (docs-site/OPEN-QUESTIONS.md: confirmed roster, term labels, and photo
+          consent per person).
+        </p>
+      ) : (
+        byTerm.map((group) => (
+          <details class="mt-10" open={group.term === currentTerm}>
+            <summary class="cursor-pointer font-mono text-xs font-medium tracking-widest text-navy/70">
+              {group.term} {group.term === currentTerm && '· CURRENT'}
+            </summary>
+            <ul class="mt-4 grid gap-6 sm:grid-cols-3">
+              {group.members.map((member) => (
+                <li>
+                  {member.data.photo ? (
+                    <img src={member.data.photo} alt="" class="h-20 w-20 rounded-full object-cover" />
+                  ) : (
+                    <div
+                      class="flex h-20 w-20 items-center justify-center rounded-full bg-teal/30 font-display text-lg font-semibold text-navy"
+                      aria-hidden="true"
+                    >
+                      {initials(member.data.name)}
+                    </div>
+                  )}
+                  <p class="mt-2 font-semibold text-navy">{member.data.name}</p>
+                  <p class="text-sm text-navy/70">{member.data.role}</p>
+                  {member.data.bio && <p class="mt-1 text-sm text-navy/70">{member.data.bio}</p>}
+                  {member.data.links && member.data.links.length > 0 && (
+                    <ul class="mt-1 flex gap-2">
+                      {member.data.links.map((link) => (
+                        <li>
+                          <a href={link.url} class="text-xs text-navy/70 underline hover:text-orange">
+                            {link.label}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ))
+      )
+    }
   </main>
   <Footer />
 </BaseLayout>
