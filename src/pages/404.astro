@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout title="Page not found">
+  <Nav />
+  <main id="main" class="mx-auto max-w-xl px-6 py-24 text-center">
+    <p class="font-mono text-xs font-medium tracking-widest text-navy/70">404</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold text-navy">Page not found</h1>
+    <p class="mt-3 text-navy/80">That page doesn't exist, or it moved.</p>
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <Button href="/" variant="primary">Home</Button>
+      <Button href="/events" variant="secondary">Events</Button>
+      <Button href="/resources" variant="secondary">Resources</Button>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

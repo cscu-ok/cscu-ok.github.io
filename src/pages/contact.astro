@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Contact">
+  <Nav />
+  <main id="main" class="mx-auto max-w-2xl px-6 py-16">
+    <h1 class="font-display text-3xl font-semibold text-navy">Contact</h1>
+    <p class="mt-3 text-navy/80">CSCU is a student union in the Computer Science program at UBC Okanagan.</p>
+
+    <dl class="mt-8 space-y-4">
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">EMAIL</dt>
+        <dd class="mt-1">
+          <a href="mailto:cscu.okanagan@gmail.com" class="text-navy underline hover:text-orange">
+            cscu.okanagan@gmail.com
+          </a>
+          <p class="mt-1 text-sm text-navy/70">
+            For membership or account questions, include your name, student number, and
+            UBCO email so we can find your record.
+          </p>
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">DISCORD</dt>
+        <dd class="mt-1">
+          <a href="https://discord.gg/9ZD8VDW7gf" class="text-navy underline hover:text-orange">
+            discord.gg/9ZD8VDW7gf
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="font-mono text-xs font-medium tracking-widest text-navy/70">INSTAGRAM</dt>
+        <dd class="mt-1">
+          <a href="https://instagram.com/cscu.ok" class="text-navy underline hover:text-orange">
+            @cscu.ok
+          </a>
+        </dd>
+      </div>
+    </dl>
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,164 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Card from '../components/Card.astro';
+import Button from '../components/Button.astro';
+import Footer from '../components/Footer.astro';
+import type { TimetableEvent } from '../lib/timetable';
+
+const now = new Date();
+const upcomingEntries = (await getCollection('events', ({ data }) => !data.draft))
+  .filter((e) => e.data.date >= now)
+  .sort((a, b) => a.data.date.getTime() - b.data.date.getTime());
+
+const events: TimetableEvent[] = upcomingEntries.map((e) => ({
+  title: e.data.title,
+  date: e.data.date,
+  end: e.data.end,
+  location: e.data.location,
+  type: e.data.type,
+  href: `/events/${e.id}/`,
+}));
+
+const nextThree = upcomingEntries.slice(0, 3);
+
+const photos = (await getCollection('photos')).sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Computer Science Course Union',
+  alternateName: 'CSCU',
+  url: Astro.site!.href,
+  logo: new URL('/assets/img/logo.png', Astro.site).href,
+  sameAs: ['https://instagram.com/cscu.ok'],
+};
+
+const whatWeDo = [
+  {
+    eyebrow: 'ADVOCACY',
+    title: 'Course & department voice',
+    body: 'We represent CS and Data Science students to the department on courses, workload, and policy.',
+  },
+  {
+    eyebrow: 'COMMUNITY',
+    title: 'Events & socials',
+    body: 'Workshops, talks, and socials through the term, open to any student in the program.',
+  },
+  {
+    eyebrow: 'OPPORTUNITY',
+    title: 'BC Hacks & beyond',
+    body: 'We run BC Hacks and point students toward hackathons, jobs, and co-op resources.',
+  },
+];
+---
+
+<BaseLayout title="Home">
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+  <Nav />
+  <main id="main">
+    <Hero events={events} />
+
+    <section class="mx-auto max-w-6xl px-6 py-16" aria-labelledby="next-up-heading">
+      <h2 id="next-up-heading" class="font-display text-2xl font-semibold text-navy">Coming up</h2>
+      {
+        nextThree.length === 0 ? (
+          <p class="mt-4 text-navy/70">
+            No events posted yet. Check the <a href="/events" class="underline hover:text-orange">full events page</a> or our{' '}
+            <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">Discord</a> for the latest.
+          </p>
+        ) : (
+          <ol class="mt-6 grid gap-4 sm:grid-cols-3">
+            {nextThree.map((e) => (
+              <li>
+                <a href={`/events/${e.id}/`} class="block">
+                  <Card title={e.data.title} eyebrow={e.data.type.toUpperCase()}>
+                    {e.data.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} · {e.data.location}
+                  </Card>
+                </a>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </section>
+
+    <section class="bg-pale/60 py-16" aria-labelledby="vision-heading">
+      <div class="mx-auto max-w-3xl px-6 text-center">
+        <p class="font-mono text-xs font-medium tracking-widest text-navy/70">VISION</p>
+        <h2 id="vision-heading" class="mt-2 font-display text-2xl font-semibold text-navy">
+          Where CSCU is headed
+        </h2>
+        <p class="mt-4 text-navy/80">
+          CSCU's exec team is finalizing a written vision statement for the union's
+          direction. Until it's published, the{' '}
+          <a href="/about" class="underline hover:text-orange">About</a> page covers
+          the history and thinking behind this rebuild.
+        </p>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 py-16" aria-labelledby="community-heading">
+      <p class="font-mono text-xs font-medium tracking-widest text-navy/70">ONE CS COMMUNITY</p>
+      <h2 id="community-heading" class="mt-2 max-w-2xl font-display text-2xl font-semibold text-navy">
+        Working with the department, and with every CS club
+      </h2>
+      <p class="mt-4 max-w-2xl text-navy/80">
+        CSCU works with the UBC Okanagan Department of Computer Science to support
+        the wider ecosystem of CS-related clubs on campus, including AI Club, Girls
+        in Tech, and others, rather than operating on its own. The goal is one CS
+        community with more consistent opportunities across all of them, not
+        separate clubs competing for the same small pool of student time.
+      </p>
+    </section>
+
+    <section class="bg-pale/60 py-16" aria-labelledby="what-we-do-heading">
+      <div class="mx-auto max-w-6xl px-6">
+        <h2 id="what-we-do-heading" class="font-display text-2xl font-semibold text-navy">What we do</h2>
+        <div class="mt-6 grid gap-4 sm:grid-cols-3">
+          {
+            whatWeDo.map((item) => (
+              <Card eyebrow={item.eyebrow} title={item.title}>
+                {item.body}
+              </Card>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 py-16" aria-labelledby="photos-heading">
+      <div class="flex items-baseline justify-between gap-4">
+        <h2 id="photos-heading" class="font-display text-2xl font-semibold text-navy">Photos</h2>
+        <a href="/past-years" class="text-sm text-navy/70 underline hover:text-orange">Past years</a>
+      </div>
+      {
+        photos.length === 0 ? (
+          <p class="mt-4 text-navy/70">No photos posted yet, check back after the next event.</p>
+        ) : (
+          <ul class="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {photos.slice(0, 8).map((p) => (
+              <li class="aspect-square overflow-hidden rounded-lg bg-pale">
+                <img src={p.data.image} alt={p.data.alt} class="h-full w-full object-cover" loading="lazy" />
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    <section class="mx-auto max-w-6xl px-6 py-16 text-center" aria-labelledby="join-heading">
+      <h2 id="join-heading" class="font-display text-2xl font-semibold text-navy">Get involved</h2>
+      <p class="mx-auto mt-3 max-w-xl text-navy/70">
+        Membership is open to any UBCO student in CS or Data Science. Volunteer, run for
+        exec, or just come to an event.
+      </p>
+      <div class="mt-6">
+        <Button href="/get-involved" variant="primary">Join CSCU</Button>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

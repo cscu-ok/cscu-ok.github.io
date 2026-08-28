@@ -1,0 +1,93 @@
+/*
+ * Design tokens — single source of truth for color, spacing, type scale, radius (FR-7).
+ * No raw hex values should appear anywhere else in src/.
+ *
+ * Colors below are sampled directly from public/assets/img/logo.png (M1), not the
+ * spec's Section 8.1 approximations. There is no "pale blue disc" in the actual
+ * asset — --color-pale is a derived tint (10% teal into white), chosen because
+ * no source pixel exists for it.
+ *
+ * Verified WCAG contrast ratios (see docs-site/OPEN-QUESTIONS.md for method):
+ *   navy on paper / pale   : 14.9–16.1:1  (safe for body text)
+ *   teal on navy           : 7.5:1        (safe for text/icons on navy only)
+ *   orange on navy         : 5.8:1        (safe for text/icons on navy only)
+ *   navy on orange         : 5.8:1        (safe — use navy text on orange fills)
+ *   orange on paper / pale : 2.5–2.8:1    (FAILS AA — orange must never be small
+ *                                          text or a text-behind-fill color on
+ *                                          white/pale; navy-on-orange or orange
+ *                                          used decoratively/at large scale only)
+ *   teal on paper           : 2.15:1      (FAILS AA — same rule as orange)
+ */
+
+@import './fonts.css';
+
+:root {
+  /* Color: brand */
+  --color-navy: #1e1754;
+  --color-teal: #53c0cd;
+  --color-orange: #f07b3d;
+  --color-pale: #eef9fa;
+  --color-paper: #ffffff;
+
+  /* Color: semantic */
+  --color-text: var(--color-navy);
+  --color-text-on-dark: var(--color-paper);
+  --color-surface: var(--color-paper);
+  --color-surface-tint: var(--color-pale);
+  --color-surface-dark: var(--color-navy);
+  --color-accent: var(--color-orange);
+  --color-accent-text: var(--color-navy); /* text/icon color when placed on --color-accent */
+  --color-data: var(--color-teal); /* decorative/large-scale use only, see contrast note above */
+  --color-border: color-mix(in srgb, var(--color-navy) 15%, transparent);
+  --color-focus-ring: var(--color-orange);
+
+  /* Solid (not alpha) muted text. text-navy/70 (real alpha transparency) is
+     fine and verified everywhere it's used (5.5-6.1:1, see contrast note
+     above) EXCEPT text that's a descendant of a `position: absolute`
+     ancestor — axe-core false-flags alpha-channel text color there
+     regardless of the actual resolved color (a documented axe limitation,
+     not a real contrast defect; confirmed by inspecting computed styles).
+     Use this solid pre-blended token in that one situation. Equivalent to
+     navy/70 on white (6.11:1). */
+  --color-muted: #625d87;
+
+  /* Decorative-only grid-line texture (Hero empty state background-image).
+     Not text, so it has no WCAG contrast requirement at all. */
+  --color-navy-grid-line: color-mix(in srgb, var(--color-navy) 10%, transparent);
+
+  /* Type: families */
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+  --font-body: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Type: fluid scale (clamp: min, preferred-vw, max) */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(1.875rem, 1.55rem + 1.6vw, 2.5rem);
+  --text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3.25rem);
+  --text-5xl: clamp(2.75rem, 2rem + 3.75vw, 4.5rem);
+
+  /* Spacing: 4px grid */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Radius */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 999px;
+}

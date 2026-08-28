@@ -1,0 +1,7 @@
+---
+image: /assets/img/gallery/IMG_5508.webp
+alt: Two attendees posing together at the VerTech photo backdrop
+caption: Coding Club Legacy Gala, VerTech, April 2025
+year: 2024-2025
+order: 6
+---

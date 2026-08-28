@@ -1,0 +1,123 @@
+---
+// The signature homepage element (Section 8.2): a timetable grid where the cells
+// are CSCU's own events instead of courses. Pure CSS Grid, computed at build time —
+// no client JS. Without CSS/on narrow screens the same <ol> just reads as a plain
+// list, in DOM order, which is the "degrades to a list" requirement for free.
+import Button from './Button.astro';
+import { layoutWeek, weekDayLabels, HOUR_START, HOUR_ROWS, type TimetableEvent } from '../lib/timetable';
+
+interface Props {
+  events: TimetableEvent[];
+}
+
+const { events } = Astro.props;
+const now = new Date();
+const placed = layoutWeek(events, now);
+const days = weekDayLabels(now);
+const hours = Array.from({ length: HOUR_ROWS }, (_, i) => HOUR_START + i);
+
+function formatHour(h: number) {
+  const period = h < 12 ? 'AM' : 'PM';
+  const hour12 = h % 12 === 0 ? 12 : h % 12;
+  return `${hour12}${period}`;
+}
+---
+
+<section class="border-b border-navy/10 bg-pale" aria-labelledby="hero-heading">
+  <div class="mx-auto max-w-6xl px-6 py-16">
+    <p class="font-mono text-xs font-medium tracking-widest text-navy/70">CSCU · THIS WEEK</p>
+    <h1 id="hero-heading" class="mt-2 max-w-2xl font-display text-4xl font-semibold text-navy sm:text-5xl">
+      The Computer Science Course Union
+    </h1>
+    <p class="mt-4 max-w-xl text-lg text-navy/80">
+      A department-backed community for CS and Data Science students at UBC Okanagan:
+      events, resources, and a way to get involved.
+    </p>
+    <div class="mt-6">
+      {/* Secondary, not primary/orange: the header's persistent "Join CSCU" CTA
+          is already orange and visible in the same view — Section 8.1's "orange
+          is scarcest, never two competing" rule applies within a single viewport. */}
+      <Button href="/get-involved" variant="secondary">Join CSCU</Button>
+    </div>
+
+    <div class="mt-12 overflow-x-auto rounded-lg border border-navy/10 bg-paper">
+      {
+        placed.length === 0 ? (
+          // The grid-line texture is a CSS background-image, not DOM elements —
+          // decorative texture behind text has no WCAG contrast requirement, but
+          // more importantly: no absolute-positioned overlap means no stacking
+          // ambiguity for either axe's automated check or an actual renderer.
+          // The message card is a normal-flow child, plain flex-centered.
+          <div
+            class="flex min-h-[26rem] items-center justify-center p-8"
+            style="background-image: repeating-linear-gradient(var(--color-navy-grid-line) 0 1px, transparent 1px 1.75rem), repeating-linear-gradient(90deg, var(--color-navy-grid-line) 0 1px, transparent 1px 4.5rem); background-position: 3.5rem 0;"
+          >
+            <div class="flex max-w-sm flex-col items-center gap-3 rounded-lg bg-paper p-6 text-center shadow-sm">
+              <p class="font-display text-xl font-semibold text-navy">Nothing scheduled this week</p>
+              <p class="text-sm text-muted">Check back soon, or see what CSCU got up to last term.</p>
+              <Button href="/news" variant="secondary">See last term</Button>
+            </div>
+          </div>
+        ) : (
+          // TODO(a11y): this populated path is un-exercised until M2 wires real events —
+          // give it a manual keyboard/screen-reader pass then (FR-23). The day/hour
+          // headers below are plain grid cells, not <th>/role="columnheader"; consider
+          // an ARIA grid pattern (role="grid"/"row"/"columnheader"/"gridcell") or a
+          // visually-hidden <table> fallback once there's real content to test against.
+          <ol
+            class="grid list-none"
+            style={`grid-template-columns: 3.5rem repeat(7, minmax(4.5rem, 1fr)); grid-auto-rows: 1.75rem;`}
+          >
+            <li aria-hidden="true" />
+            {days.map((d) => (
+              <li
+                class:list={[
+                  'border-b border-l border-navy/20 px-2 py-1 font-mono text-xs',
+                  d.isToday ? 'bg-orange/20 font-semibold text-navy' : 'text-navy/70',
+                ]}
+              >
+                {d.short}
+              </li>
+            ))}
+            {hours.map((h) => (
+              <Fragment>
+                <li
+                  aria-hidden="true"
+                  class="border-b border-navy/20 px-2 py-1 font-mono text-xs text-navy/70"
+                  style={`grid-row: ${h - HOUR_START + 2};`}
+                >
+                  {formatHour(h)}
+                </li>
+                {days.map((_, dayIdx) => (
+                  <li
+                    aria-hidden="true"
+                    class="border-b border-l border-navy/10"
+                    style={`grid-column: ${dayIdx + 2}; grid-row: ${h - HOUR_START + 2};`}
+                  />
+                ))}
+              </Fragment>
+            ))}
+            {placed.map((p) => (
+              <li
+                class:list={[
+                  'm-0.5 overflow-hidden rounded-md px-2 py-1 text-xs font-medium',
+                  p.isPast ? 'bg-navy/10 text-navy/70' : 'bg-teal/30 text-navy',
+                ]}
+                style={`grid-column: ${p.dayIndex + 2}; grid-row: ${p.rowStart + 1} / span ${p.rowSpan};`}
+              >
+                {p.event.href ? (
+                  <a href={p.event.href} class="hover:underline">
+                    {p.event.title}
+                  </a>
+                ) : (
+                  p.event.title
+                )}
+                <span class="block text-[10px] text-navy/70">{p.event.location}</span>
+              </li>
+            ))}
+          </ol>
+        )
+      }
+    </div>
+  </div>
+</section>

@@ -1,43 +1,18 @@
-# The CSCU's public website
+# CSCU website
 
-## Set up
+The public website for the Computer Science Course Union (CSCU) at UBC Okanagan — `https://cscu-ok.github.io` (a dedicated domain will be added later; see `docs-site/TODO.md`).
 
-This guide assumes you have [Git](https://git-scm.com/) installed on your computer. If not, see the link for instructions.
+**Status:** this is the `v2` rebuild (Astro, replacing the old Cobalt site), on branch `v2` via PR #1. Until it's merged, `main` still serves the old site. See `docs-site/DEPLOY.md` for the cutover plan and `docs-site/TODO.md` for post-launch follow-ups.
 
-This website is built using a static site generator called Cobalt. A static site generator is a program that takes a bundle of static text files and generates a complete website. This way, you can easily create a dynamic website that's simple to update without needing a complete back end (which is a restriction of leeching hosting from GitHub).
-
-Cobalt is installed and run on the command line. For instructions on how to set it up on MacOS, Linux or on Windows using WSL, see [the Cobalt installation docs](https://cobalt-org.github.io/getting-started/). In short, run this command in your terminal:
+## Quick start
 
 ```bash
-curl -LSfs https://raw.githubusercontent.com/crate-ci/gh-install/master/v1/install.sh | sh -s -- --git cobalt-org/cobalt.rs --crate cobalt
+npm install
+npm run dev
 ```
 
-For usage not covered in this README, you may also refer to [the Cobalt documentation](https://cobalt-org.github.io/docs/).
+See [`docs-site/CONTRIBUTING.md`](./docs-site/CONTRIBUTING.md) for full setup, branch workflow, and project structure. See [`docs-site/CONTENT.md`](./docs-site/CONTENT.md) to add content (events, team members, resources, posts) without running any tooling.
 
-Once you have Cobalt installed, run:
+## License
 
-```
-git clone https://github.com/cscu-ok/cscu-ok.github.io
-cd cscu-ok.github.io
-cobalt serve
-```
-
-Running `cobalt serve` starts a small web server on your computer serving the site that automatically updates as you change things. Open the URL `http://localhost:1024` to see a preview of the website.
-
-## How-to
-
-### Update the quick links
-
-The quick links page is generated using data specified in the YAML "front matter" of the `index.liquid` document. As an example:
-
-```
-data:
-    links:
-    - href: https://www.example.com/some/web/page
-      title: The link title
-      description: >
-        This is a longer description
-        It can take up more than one line!
-```
-
-If you specify `description: null`, then the description won't be rendered at all. The title will be placed in the center of the link's rectangle with a bit of extra spacing.
+AGPL-3.0 — see [`LICENSE`](./LICENSE).

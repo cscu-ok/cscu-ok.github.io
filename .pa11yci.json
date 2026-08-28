@@ -1,0 +1,26 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:4321/",
+    "http://localhost:4321/about/",
+    "http://localhost:4321/about/constitution/",
+    "http://localhost:4321/events/",
+    "http://localhost:4321/team/",
+    "http://localhost:4321/get-involved/",
+    "http://localhost:4321/resources/",
+    "http://localhost:4321/news/",
+    "http://localhost:4321/contact/",
+    "http://localhost:4321/past-years/",
+    "http://localhost:4321/events/trivia-night-2026/",
+    "http://localhost:4321/events/vertech-gala-2025/",
+    "http://localhost:4321/events/c2-hacks-2025/",
+    "http://localhost:4321/events/linkedin-and-lockedin-2026/",
+    "http://localhost:4321/404.html"
+  ]
+}

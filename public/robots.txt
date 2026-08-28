@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cscu-ok.github.io/sitemap-index.xml

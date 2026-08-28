@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { academicYearOf } from '../lib/academicYear';
+
+const events = await getCollection('events', ({ data }) => !data.draft);
+const photos = await getCollection('photos');
+
+const years = new Set<string>();
+events.forEach((e) => years.add(academicYearOf(e.data.date)));
+photos.forEach((p) => {
+  if (p.data.year) years.add(p.data.year);
+});
+
+const sortedYears = [...years].sort().reverse();
+
+const byYear = sortedYears.map((year) => ({
+  year,
+  events: events
+    .filter((e) => academicYearOf(e.data.date) === year)
+    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime()),
+  photos: photos
+    .filter((p) => p.data.year === year)
+    .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999)),
+}));
+---
+
+<BaseLayout title="Past Years">
+  <Nav />
+  <main id="main" class="mx-auto max-w-4xl px-6 py-16">
+    <h1 class="font-display text-3xl font-semibold text-navy">Past Years</h1>
+    <p class="mt-3 max-w-xl text-navy/80">Events and photos from previous academic years, one archive per year.</p>
+
+    {
+      byYear.length === 0 ? (
+        <p class="mt-8 text-navy/70">
+          No past years archived yet. Once an academic year's events and photos are
+          added, they'll show up here automatically, grouped by year.
+        </p>
+      ) : (
+        byYear.map((group) => (
+          <section class="mt-12 border-t border-navy/10 pt-8" aria-labelledby={`year-${group.year}`}>
+            <h2 id={`year-${group.year}`} class="font-display text-xl font-semibold text-navy">
+              {group.year}
+            </h2>
+
+            {group.photos.length > 0 && (
+              <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {group.photos.map((p) => (
+                  <li class="aspect-square overflow-hidden rounded-lg bg-pale">
+                    <img src={p.data.image} alt={p.data.alt} class="h-full w-full object-cover" loading="lazy" />
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {group.events.length > 0 && (
+              <ul class="mt-4 divide-y divide-navy/10 border-y border-navy/10">
+                {group.events.map((e) => (
+                  <li class="py-3">
+                    <a href={`/events/${e.id}/`} class="font-semibold text-navy hover:text-orange">
+                      {e.data.title}
+                    </a>
+                    <p class="mt-0.5 text-sm text-navy/70">
+                      {e.data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      {' · '}
+                      {e.data.location}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        ))
+      )
+    }
+  </main>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,65 @@
+name: Deploy
+
+# FR-2: builds and deploys on push to main, plus manual dispatch. Only runs once
+# Pages' source is switched to "GitHub Actions" (cutover checklist step, admin-only —
+# see docs-site/DEPLOY.md). Until then this workflow exists but has nothing to
+# publish to.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: '.nvmrc'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # FR-24: this is the actual "production build" the placeholder guard means —
+      # unlike the PR check (build.yml), a deploy must never ship TODO(content) or
+      # lorem ipsum.
+      - name: Block placeholder content (FR-24)
+        run: |
+          if grep -rIlE 'TODO\(content\)|lorem ipsum' dist 2>/dev/null | grep -q .; then
+            echo "Placeholder content found in the production build — not deploying:"
+            grep -rIlnE 'TODO\(content\)|lorem ipsum' dist
+            exit 1
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

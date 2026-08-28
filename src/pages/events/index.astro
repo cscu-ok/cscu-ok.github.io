@@ -1,0 +1,138 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import Card from '../../components/Card.astro';
+import MonthCalendar from '../../components/MonthCalendar.astro';
+import type { TimetableEvent } from '../../lib/timetable';
+
+const now = new Date();
+const all = (await getCollection('events', ({ data }) => !data.draft)).sort(
+  (a, b) => a.data.date.getTime() - b.data.date.getTime()
+);
+const upcoming = all.filter((e) => e.data.date >= now);
+const past = all.filter((e) => e.data.date < now).reverse();
+
+const TYPES = ['workshop', 'social', 'talk', 'hackathon', 'meeting', 'other'] as const;
+const typesPresent = TYPES.filter((t) => all.some((e) => e.data.type === t));
+
+const asTimetableEvent = (e: (typeof all)[number]): TimetableEvent => ({
+  title: e.data.title,
+  date: e.data.date,
+  end: e.data.end,
+  location: e.data.location,
+  type: e.data.type,
+  href: `/events/${e.id}/`,
+});
+const allTimetable = all.map(asTimetableEvent);
+const upcomingTimetable = upcoming.map(asTimetableEvent);
+---
+
+<BaseLayout title="Events">
+  <Nav />
+  <main id="main" class="mx-auto max-w-5xl px-6 py-16">
+    <h1 class="font-display text-3xl font-semibold text-navy">Events</h1>
+
+    <div class="mt-8">
+      <MonthCalendar events={allTimetable} upcoming={upcomingTimetable} />
+    </div>
+
+    {
+      typesPresent.length > 1 && (
+        <div class="mt-6 flex flex-wrap gap-2" role="group" aria-label="Filter by event type">
+          <button type="button" data-filter="all" class="event-filter rounded-full border-2 border-navy px-4 py-1.5 text-sm font-medium text-navy" aria-pressed="true">
+            All
+          </button>
+          {typesPresent.map((t) => (
+            <button
+              type="button"
+              data-filter={t}
+              class="event-filter rounded-full border-2 border-navy/30 px-4 py-1.5 text-sm font-medium text-navy/70"
+              aria-pressed="false"
+            >
+              {t[0].toUpperCase() + t.slice(1)}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    <section class="mt-8" aria-labelledby="upcoming-heading">
+      <h2 id="upcoming-heading" class="font-mono text-xs font-medium tracking-widest text-navy/70">UPCOMING</h2>
+      {
+        upcoming.length === 0 ? (
+          <p class="mt-4 text-navy/70">
+            Nothing posted yet. Check the{' '}
+            <a href="https://discord.gg/9ZD8VDW7gf" class="underline hover:text-orange">
+              Discord
+            </a>{' '}
+            for the latest.
+          </p>
+        ) : (
+          <ul id="event-list" class="mt-4 grid gap-4 sm:grid-cols-2">
+            {upcoming.map((e) => (
+              <li data-event-type={e.data.type}>
+                <a href={`/events/${e.id}/`} class="block">
+                  <Card eyebrow={e.data.type.toUpperCase()} title={e.data.title}>
+                    {e.data.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })} · {e.data.location}
+                  </Card>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </section>
+
+    {
+      past.length > 0 && (
+        <details class="mt-12">
+          <summary class="cursor-pointer font-mono text-xs font-medium tracking-widest text-navy/70">PAST EVENTS</summary>
+          <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+            {past.map((e) => (
+              <li data-event-type={e.data.type}>
+                <a href={`/events/${e.id}/`} class="block opacity-70">
+                  <Card eyebrow={e.data.type.toUpperCase()} title={e.data.title}>
+                    {e.data.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} · {e.data.location}
+                  </Card>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      )
+    }
+  </main>
+  <Footer />
+
+  {
+    typesPresent.length > 1 && (
+      <script>
+        // Progressive enhancement only: the full list above already renders and is
+        // fully usable without this. JS here only ever hides, never the sole source
+        // of content (FR-14).
+        const buttons = document.querySelectorAll<HTMLButtonElement>('.event-filter');
+        const items = document.querySelectorAll<HTMLLIElement>('[data-event-type]');
+
+        buttons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const filter = button.dataset.filter;
+            buttons.forEach((b) => {
+              const active = b === button;
+              b.setAttribute('aria-pressed', String(active));
+              b.classList.toggle('border-navy', active);
+              b.classList.toggle('text-navy', active);
+              b.classList.toggle('border-navy/30', !active);
+              b.classList.toggle('text-navy/70', !active);
+            });
+            items.forEach((item) => {
+              const show = filter === 'all' || item.dataset.eventType === filter;
+              item.classList.toggle('hidden', !show);
+            });
+          });
+        });
+      </script>
+    )
+  }
+</BaseLayout>
