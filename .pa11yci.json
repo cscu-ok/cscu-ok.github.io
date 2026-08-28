@@ -17,6 +17,10 @@
     "http://localhost:4321/news/",
     "http://localhost:4321/contact/",
     "http://localhost:4321/past-years/",
+    "http://localhost:4321/events/trivia-night-2026/",
+    "http://localhost:4321/events/vertech-gala-2025/",
+    "http://localhost:4321/events/c2-hacks-2025/",
+    "http://localhost:4321/events/linkedin-and-lockedin-2026/",
     "http://localhost:4321/404.html"
   ]
 }
