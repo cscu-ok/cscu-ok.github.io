@@ -3,6 +3,12 @@
 Every piece of content that existed on the old Cobalt site, where it went in v2, and
 whether it was kept, rewritten, or dropped. Nothing was dropped silently.
 
+> **Update 2026-08-28:** `cscusuo.org` lapsed. The `CNAME` row below no longer
+> applies — `public/CNAME` was removed and v2 serves from `cscu-ok.github.io`.
+> The contact email changed to `cscu.okanagan@gmail.com`. RSS/canonical URLs now
+> come from `astro.config.mjs` `site:` (`cscu-ok.github.io`). See
+> `docs-site/OPEN-QUESTIONS.md` and `docs-site/TODO.md`.
+
 | Old content | Source | v2 destination | Status |
 |---|---|---|---|
 | 6 quick links (election nomination, Rubric membership, regulations, BC Hacks 6.0/5.0/4.0 project galleries) | `index.liquid` front matter `data.links` | `src/content/resources/*.md`, one file per link | **Kept.** Categorized for FR-18. The election nomination link's copy is flagged `TODO(content)` — it references a "2025-2026" cycle with a March 28 deadline that's almost certainly stale; the URL is preserved, the claim that it's the *current* election is not asserted. |

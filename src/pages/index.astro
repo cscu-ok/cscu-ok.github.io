@@ -31,8 +31,8 @@ const organizationJsonLd = {
   '@type': 'Organization',
   name: 'Computer Science Course Union',
   alternateName: 'CSCU',
-  url: 'https://cscusuo.org',
-  logo: 'https://cscusuo.org/assets/img/logo.png',
+  url: Astro.site!.href,
+  logo: new URL('/assets/img/logo.png', Astro.site).href,
   sameAs: ['https://instagram.com/cscu.ok'],
 };
 
@@ -92,11 +92,10 @@ const whatWeDo = [
           Where CSCU is headed
         </h2>
         <p class="mt-4 text-navy/80">
-          TODO(content): the vision statement itself is being written by Marvin and
-          the exec team and hasn't landed yet. This section is intentionally kept as
-          a placeholder rather than a guess. See{' '}
-          <a href="/about" class="underline hover:text-orange">About</a> in the
-          meantime for the history and direction behind this rebuild.
+          CSCU's exec team is finalizing a written vision statement for the union's
+          direction. Until it's published, the{' '}
+          <a href="/about" class="underline hover:text-orange">About</a> page covers
+          the history and thinking behind this rebuild.
         </p>
       </div>
     </section>

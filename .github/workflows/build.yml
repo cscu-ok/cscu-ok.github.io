@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
           cache: npm
@@ -61,7 +61,3 @@ jobs:
             grep -rIlnE 'googletagmanager|google-analytics|gtag\(|facebook\.net/[a-z]+/fbevents|hotjar|segment\.(io|com)|mixpanel' dist
             exit 1
           fi
-
-      - name: Verify CNAME survives the build (FR-4)
-        run: |
-          test "$(cat dist/CNAME)" = "cscusuo.org" || (echo "dist/CNAME missing or incorrect" && exit 1)

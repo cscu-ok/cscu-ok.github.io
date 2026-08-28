@@ -11,7 +11,9 @@ const OLD_PATHS_TO_NEW_DIST_FILES = {
   '/': 'index.html',
   '/bchacks/': 'bchacks/index.html',
   '/rss.xml': 'rss.xml',
-  '/CNAME': 'CNAME',
+  // '/CNAME' intentionally dropped — cscusuo.org lapsed, so v2 serves from the
+  // default Pages domain with no custom-domain CNAME. Restore this entry (and
+  // public/CNAME) when a new domain is bought. See docs-site/TODO.md.
   '/LICENSE': 'LICENSE',
   '/assets/img/bchacks.png': 'assets/img/bchacks.png',
   '/assets/img/discord.png': 'assets/img/discord.png',

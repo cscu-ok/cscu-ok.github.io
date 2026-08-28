@@ -21,10 +21,10 @@ export function buildIcs(event: {
   const lines = [
     'BEGIN:VCALENDAR',
     'VERSION:2.0',
-    'PRODID:-//CSCU//cscusuo.org//EN',
+    'PRODID:-//CSCU//cscu-ok.github.io//EN',
     'CALSCALE:GREGORIAN',
     'BEGIN:VEVENT',
-    `UID:${event.uid}@cscusuo.org`,
+    `UID:${event.uid}@cscu-ok.github.io`,
     `DTSTAMP:${formatIcsDate(new Date())}`,
     `DTSTART:${formatIcsDate(event.start)}`,
     `DTEND:${formatIcsDate(end)}`,

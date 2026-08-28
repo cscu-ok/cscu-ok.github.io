@@ -3,8 +3,8 @@ import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
 
 // FR-19: preserved at the same path as the old Cobalt site (_cobalt.yml's
-// `posts: rss: rss.xml`), now with correct absolute URLs on cscusuo.org
-// instead of the stale cscu.io from the old config (FR-10).
+// `posts: rss: rss.xml`), now with correct absolute URLs from `context.site`
+// (astro.config.mjs) instead of the stale cscu.io from the old config (FR-10).
 export async function GET(context: APIContext) {
   const posts = await getCollection('posts', ({ data }) => !data.draft);
   return rss({

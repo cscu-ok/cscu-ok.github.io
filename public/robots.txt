@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cscusuo.org/sitemap-index.xml
+Sitemap: https://cscu-ok.github.io/sitemap-index.xml

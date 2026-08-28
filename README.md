@@ -1,8 +1,8 @@
 # CSCU website
 
-The public website for the Computer Science Course Union (CSCU) at UBC Okanagan — `https://cscusuo.org`.
+The public website for the Computer Science Course Union (CSCU) at UBC Okanagan — `https://cscu-ok.github.io` (a dedicated domain will be added later; see `docs-site/TODO.md`).
 
-**Status:** this is the `v2` rebuild in progress (Astro, replacing the old Cobalt site). The live site is still served from `main`; `v2` has not cut over yet. See `docs-site/DEPLOY.md` for the cutover plan.
+**Status:** this is the `v2` rebuild (Astro, replacing the old Cobalt site), on branch `v2` via PR #1. Until it's merged, `main` still serves the old site. See `docs-site/DEPLOY.md` for the cutover plan and `docs-site/TODO.md` for post-launch follow-ups.
 
 ## Quick start
 

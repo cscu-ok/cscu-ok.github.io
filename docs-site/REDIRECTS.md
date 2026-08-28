@@ -15,8 +15,8 @@ shouldn't — `main` stays untouched per Section 6.1 of the spec until the merge
 |---|---|---|
 | `/` | `/` | Full redesign, same URL |
 | `/bchacks/` | `/bchacks/` | Preserved byte-for-byte (non-goal: don't redesign it) |
-| `/rss.xml` | `/rss.xml` | Regenerated — old feed's `<link>` pointed at the stale `cscu.io` (the config-drift bug noted in the spec background); v2's points at `cscusuo.org` |
-| `/CNAME` | `/CNAME` | Unchanged content (`cscusuo.org`) |
+| `/rss.xml` | `/rss.xml` | Regenerated — old feed's `<link>` pointed at the stale `cscu.io` (the config-drift bug noted in the spec background); v2's points at `context.site` (currently `cscu-ok.github.io`) |
+| `/CNAME` | — | **Dropped.** `cscusuo.org` lapsed; v2 serves from the default Pages domain (`cscu-ok.github.io`) with no custom-domain CNAME. Restore `public/CNAME` and this row when a new domain is bought — see `docs-site/TODO.md`. |
 | `/LICENSE` | `/LICENSE` | Symlinked from the repo-root `LICENSE` so it can't drift out of sync |
 | `/assets/img/bchacks.png` | `/assets/img/bchacks.png` | Unchanged |
 | `/assets/img/discord.png` | `/assets/img/discord.png` | Unchanged |

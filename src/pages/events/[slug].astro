@@ -25,8 +25,8 @@ const eventJsonLd = {
   ...(end && { endDate: end.toISOString() }),
   location: { '@type': 'Place', name: location },
   description: summary,
-  url: new URL(`/events/${event.id}/`, 'https://cscusuo.org').toString(),
-  organizer: { '@type': 'Organization', name: 'CSCU', url: 'https://cscusuo.org' },
+  url: new URL(`/events/${event.id}/`, Astro.site).toString(),
+  organizer: { '@type': 'Organization', name: 'CSCU', url: Astro.site!.href },
 };
 ---
 
